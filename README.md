@@ -14,4 +14,4 @@
 
 * Se adjunta en el repositorio el archivo SQL con mi nombre en el link:
 
-[https://github.com/Leonardo-villagran/consultas-en-multiples-tablas](https://github.com/Leonardo-villagran/consultas-en-multiples-tablas)
+[https://github.com/Leonardo-villagran/consultas-en-multiples-tablas/blob/main/Tarea_3_leonardo_villagran.sql](https://github.com/Leonardo-villagran/consultas-en-multiples-tablas/blob/main/Tarea_3_leonardo_villagran.sql)
