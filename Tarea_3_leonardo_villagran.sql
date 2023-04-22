@@ -145,8 +145,6 @@ INNER JOIN usuarios AS a ON a.id=u.usuario_id
 where c.fecha_creacion = u.ultima_fecha
 ORDER BY c.usuario_id;
 
-
-
 /* 10. Muestra los emails de los usuarios que no han escrito ningún comentario. (1 Punto)
 */
 
