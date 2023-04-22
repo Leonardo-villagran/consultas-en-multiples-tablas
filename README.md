@@ -2,6 +2,8 @@
 
 >"Tarea 3: Consultas en Múltiples Tablas de DesafioLatam para el módulo: SQL (G27)"
 
+## Nombre: Leonardo Villagrán Chicago
+
 ## Características:
 
 * El trabajo consiste en un archivo de tipo sql con las consultas para crear una base de datos llamada "desafio3-leonardo-villagran-512".

@@ -1,4 +1,6 @@
-/* Tarea 3: */
+/* Tarea 3: Consultas en Múltiples Tablas de DesafioLatam para el módulo: SQL (G27) */
+
+/* Nombre: Leonardo Villagrán Chicago */
 
 /*1.- Crea y agrega al entregable las consultas para completar el setup de acuerdo a lo
 pedido. (1 Punto)*/
@@ -54,37 +56,37 @@ VALUES
 /* Insertar postss*/
 
 INSERT INTO posts (titulo, contenido, fecha_creacion, fecha_actualizacion, destacado, usuario_id) VALUES
-('Mi primer auto', 'Compré mi primer auto y estoy muy emocionado!', NOW(), NOW(), true, 3),
-('El mejor auto deportivo', 'Este auto es el mejor para los amantes de la velocidad!', NOW(), NOW(), true, 3),
-('Consejos para cuidar tu auto', 'Aquí te damos algunos tips para mantener tu auto en buen estado', NOW(), NOW(), false, 4),
-('Mejoras para tu auto', 'Descubre cómo puedes mejorar el rendimiento de tu auto', NOW(), NOW(), false, 5),
-('Los autos del futuro', 'Estos son los autos que revolucionarán la forma en que nos movilizamos', NOW(), NOW(), false, NULL);
+('Mi primer auto', 'Compré mi primer auto y estoy muy emocionado!', '2023-04-19 21:01:37.364334', NOW(), true, 3),
+('El mejor auto deportivo', 'Este auto es el mejor para los amantes de la velocidad!', '2023-04-20 21:01:37.364334', NOW(), true, 3),
+('Consejos para cuidar tu auto', 'Aquí te damos algunos tips para mantener tu auto en buen estado', '2023-04-21 21:01:37.364334', NOW(), false, 4),
+('Mejoras para tu auto', 'Descubre cómo puedes mejorar el rendimiento de tu auto', '2023-04-22 21:01:37.364334', NOW(), false, 5),
+('Los autos del futuro', 'Estos son los autos que revolucionarán la forma en que nos movilizamos', '2023-04-23 21:01:37.364334', NOW(), false, NULL);
 
 
 /* Insertar comentarios*/
 
 INSERT INTO comentarios (contenido, fecha_creacion, usuario_id, post_id)
-VALUES ('¡Excelente posts sobre autos!', NOW(), 1, 1),
-('Totalmente de acuerdo, me encantó', NOW(), 2, 1),
-('Qué interesante, no lo sabía', NOW(), 3, 1),
-('Buen punto, gracias por compartir', NOW(), 1, 2),
-('Me gustaría saber más sobre esto', NOW(), 2, 2);
+VALUES ('¡Excelente posts sobre autos!', '2023-04-25 21:01:37.364334', 1, 1),
+('Totalmente de acuerdo, me encantó', '2023-04-26 21:01:37.364334', 2, 1),
+('Qué interesante, no lo sabía', '2023-04-27 21:01:37.364334', 3, 1),
+('Buen punto, gracias por compartir', '2023-04-28 21:01:37.364334', 1, 2),
+('Me gustaría saber más sobre esto', '2023-04-29 21:01:37.364334', 2, 2);
 
-/*2. Cruza los datos de la tabla usuarios y postss mostrando las siguientes columnas.
+/*2. Cruza los datos de la tabla usuarios y posts mostrando las siguientes columnas.
 nombre e email del usuario junto al título y contenido del posts. (1 Punto)*/
 
 
 SELECT a.nombre, a.email, b.titulo, b.contenido  FROM usuarios as a INNER JOIN posts as b ON a.id = b.usuario_id;
 
-/* 3. Muestra el id, título y contenido de los postss de los administradores. El
+/* 3. Muestra el id, título y contenido de los posts de los administradores. El
 administrador puede ser cualquier id y debe ser seleccionado dinámicamente.
 (1 Punto).*/
 
-SELECT id, titulo, contenido FROM posts 
+SELECT id AS id_post, titulo, contenido FROM posts 
 WHERE usuario_id IN (SELECT id FROM usuarios WHERE rol = 'administrador');
 
-/* 4. Cuenta la cantidad de postss de cada usuario. La tabla resultante debe mostrar el id
-e email del usuario junto con la cantidad de postss de cada usuario. (1 Punto)
+/* 4. Cuenta la cantidad de posts de cada usuario. La tabla resultante debe mostrar el id
+e email del usuario junto con la cantidad de post de cada usuario. (1 Punto)
 */
 
 
@@ -93,7 +95,8 @@ FROM usuarios as  a
 LEFT JOIN posts b ON a.id = b.usuario_id
 GROUP BY a.id, a.email;
 
-/* 5. Muestra el email del usuario que ha creado más postss. Aquí la tabla resultante tiene
+
+/* 5. Muestra el email del usuario que ha creado más posts. Aquí la tabla resultante tiene
 un único registro y muestra solo el email. (1 Punto)
 */
 
@@ -102,14 +105,14 @@ INNER JOIN ( SELECT usuario_id, COUNT(*) as num_posts FROM posts GROUP BY usuari
 
 /*6. Muestra la fecha del último posts de cada usuario. (1 Punto)
 Hint: Utiliza la función de agregado MAX sobre la fecha de creación.
-
 */
 
-SELECT a.nombre, a.apellido, a.email, max(b.fecha_creacion) AS fecha_ultimo_pos
+SELECT a.nombre, a.apellido, a.email, TO_CHAR(max(b.fecha_creacion), 'DD-MM-YYYY') AS fecha_ultimo_post
 FROM usuarios a
-LEFT JOIN posts as b ON a.id = b.usuario_id
+inner JOIN posts as b ON a.id = b.usuario_id
 GROUP BY a.nombre, a.apellido, a.email
 order by a.apellido;
+
 
 /*7. Muestra el título y contenido del posts (artículo) con más comentarios. (1 Punto)*/
 
@@ -124,21 +127,25 @@ INNER JOIN (
 ) AS c ON p.id = c.post_id;
 
 /* 8. Muestra en una tabla el título de cada posts, el contenido de cada posts y el contenido
-de cada comentario asociado a los postss mostrados, junto con el email del usuario
+de cada comentario asociado a los posts mostrados, junto con el email del usuario
 que lo escribió. (1 Punto)
 */
 
-select a.email, b.titulo as posts_titulo, b.contenido as posts_contenido, c.contenido as comentario_contenido from usuarios as a
-inner join posts as b on a.id=b.usuario_id
-inner join comentarios as c on b.id=c.post_id;
+SELECT p.titulo as post_titulo, p.contenido as post_contenido, c.contenido as comentario_contenido, u.email from posts as p
+inner join comentarios as c on p.id=c.post_id
+INNER JOIN usuarios AS u ON u.id=c.usuario_id;
 
 /* 9. Muestra el contenido del último comentario de cada usuario. (1 Punto)
  */
 
-SELECT a.id, a.nombre, a.apellido, c.contenido as ultimo_comentario, c.fecha_creacion ultima_fecha
-FROM usuarios a
-INNER JOIN comentarios c ON a.id = c.usuario_id
-where c.fecha_creacion in (select max(fecha_creacion) from comentarios group by usuario_id);
+SELECT a.nombre, a.apellido, c.contenido, TO_CHAR(c.fecha_creacion, 'DD-MM-YYYY') AS fecha_ultimo_comentario
+FROM comentarios AS c
+INNER JOIN ( SELECT usuario_id, MAX(fecha_creacion) AS ultima_fecha FROM comentarios GROUP BY usuario_id) AS u ON c.usuario_id = u.usuario_id 
+INNER JOIN usuarios AS a ON a.id=u.usuario_id
+where c.fecha_creacion = u.ultima_fecha
+ORDER BY c.usuario_id;
+
+
 
 /* 10. Muestra los emails de los usuarios que no han escrito ningún comentario. (1 Punto)
 */
@@ -148,5 +155,6 @@ FROM usuarios a LEFT JOIN comentarios c
 ON a.id = c.usuario_id
 GROUP BY a.email,a.id
 having COUNT(c.id)=0;
+
 
 
